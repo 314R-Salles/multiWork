@@ -1,0 +1,34 @@
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
+
+        show-sql: true
+
+    datasource:
+        url: jdbc:mysql://localhost/demo?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
+        username: demo
+        password: demo
+
+logging:
+    level:
+        com.psalles.multiWork : debug
+    pattern:
+        console: ${CONSOLE_LOG_PATTERN:%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
+
+
+
+twitch:
+# Api url constants
+    url:
+        streams_base_url: https://api.twitch.tv/helix/streams?
+        users_base_url: https://api.twitch.tv/helix/users?
+        follows_base_url: https://api.twitch.tv/helix/users/follows?
+        videos_base_url: https://api.twitch.tv/helix/videos?
+        twitch_base_url: https://www.twitch.tv/
+        twitch_auth_url: https://id.twitch.tv/oauth2/authorize?
+        redirect: http://localhost:4200
+#Twitch token: it has to be your own.
+    token: 048o30kiq54suyv43jio7boaknv8e2
+    secret: liup4rbduyn8b3qssb7parbczq8yhv
+    scope: user_subscriptions
