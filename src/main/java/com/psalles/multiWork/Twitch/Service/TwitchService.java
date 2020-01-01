@@ -22,7 +22,6 @@ public class TwitchService {
     private final String USERS_BASE_URL;
     private final String VIDEOS_BASE_URL;
     private final String FOLLOWS_BASE_URL;
-    private final String TWITCH_TOKEN;
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private final BaseHttpClient httpClient;
     private String token;
@@ -33,13 +32,11 @@ public class TwitchService {
             @Value("${twitch.url.users_base_url}") String userUrl,
             @Value("${twitch.url.videos_base_url}") String videoUrl,
             @Value("${twitch.url.follows_base_url}") String followsBaseUrl,
-            @Value("${twitch.token}") String token,
             BaseHttpClient httpClient) {
         this.STREAMS_BASE_URL = streamUrl;
         this.USERS_BASE_URL = userUrl;
         this.FOLLOWS_BASE_URL = followsBaseUrl;
         this.VIDEOS_BASE_URL = videoUrl;
-        this.TWITCH_TOKEN = token;
         this.httpClient = httpClient;
     }
 
@@ -70,7 +67,6 @@ public class TwitchService {
         UserResponse response = httpClient.makeCall(HttpMethod.GET, USERS_BASE_URL, UserResponse.class, null, getAuthHeaders());
         return response.getData().get(0);
     }
-
 
     public void saveToken(String token) {
         this.token = token;
@@ -103,12 +99,6 @@ public class TwitchService {
     /**********************************************************************
      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
      **********************************************************************/
-
-    private HttpHeaders getDefaultHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Client-ID", TWITCH_TOKEN);
-        return headers;
-    }
 
     private HttpHeaders getAuthHeaders() {
         HttpHeaders headers = new HttpHeaders();

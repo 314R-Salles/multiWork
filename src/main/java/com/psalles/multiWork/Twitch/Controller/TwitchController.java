@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api(description = "Calls Twitch API for basic info on streams")
+@Api(description = "Calls Twitch API for basic data on streams")
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/twitch")

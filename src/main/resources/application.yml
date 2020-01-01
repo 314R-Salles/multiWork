@@ -18,6 +18,18 @@ logging:
 
 
 
+# Actuators
+management:
+    server:
+        port: 8081
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+
+actuator:
+    base_url: http://localhost:8081/actuator/
+
 twitch:
 # Api url constants
     url:
@@ -25,10 +37,3 @@ twitch:
         users_base_url: https://api.twitch.tv/helix/users?
         follows_base_url: https://api.twitch.tv/helix/users/follows?
         videos_base_url: https://api.twitch.tv/helix/videos?
-        twitch_base_url: https://www.twitch.tv/
-        twitch_auth_url: https://id.twitch.tv/oauth2/authorize?
-        redirect: http://localhost:4200
-#Twitch token: it has to be your own.
-    token: 048o30kiq54suyv43jio7boaknv8e2
-    secret: liup4rbduyn8b3qssb7parbczq8yhv
-    scope: user_subscriptions
