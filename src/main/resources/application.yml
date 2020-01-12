@@ -37,3 +37,4 @@ twitch:
         users_base_url: https://api.twitch.tv/helix/users?
         follows_base_url: https://api.twitch.tv/helix/users/follows?
         videos_base_url: https://api.twitch.tv/helix/videos?
+        extensions_base_url: https://api.twitch.tv/helix/users/extensions?
