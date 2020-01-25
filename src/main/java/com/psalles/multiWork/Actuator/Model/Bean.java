@@ -15,4 +15,5 @@ public class Bean {
     String type;
     String resource;
     List<String> dependencies;
+    String context;
 }

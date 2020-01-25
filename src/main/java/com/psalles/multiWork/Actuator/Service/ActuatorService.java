@@ -2,6 +2,7 @@ package com.psalles.multiWork.Actuator.Service;
 
 import com.psalles.multiWork.Actuator.Model.Bean;
 import com.psalles.multiWork.Actuator.Model.BeansResponse;
+import com.psalles.multiWork.Actuator.Model.Context;
 import com.psalles.multiWork.Commons.Client.BaseHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,15 +33,17 @@ public class ActuatorService {
     public List<Bean> getBeans() {
         String url = ACTUATOR_BASE_URL + "/beans";
         BeansResponse response = httpClient.makeCall(HttpMethod.GET, url, BeansResponse.class, null, null);
-        return convert(response.getContexts().getApplication().getBeans());
+        return convert(response.getContexts());
     }
 
-    private List<Bean> convert(Map<String, Bean> map) {
+    private List<Bean> convert(Map<String, Context> contexts) {
         List<Bean> result = new ArrayList<>();
-        map.forEach((key, value) -> {
-            value.setName(key);
-            result.add(value);
-        });
+        contexts.forEach((contextName, contextContent) ->
+                contextContent.getBeans().forEach((beanName, bean) -> {
+                    bean.setName(beanName);
+                    bean.setContext(contextName);
+                    result.add(bean);
+                }));
         return result;
     }
 

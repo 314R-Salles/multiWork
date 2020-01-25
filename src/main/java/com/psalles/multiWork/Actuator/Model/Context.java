@@ -3,8 +3,11 @@ package com.psalles.multiWork.Actuator.Model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Context {
-    Application application;
+    Map<String, Bean> beans;
+    String parentId;
 }
