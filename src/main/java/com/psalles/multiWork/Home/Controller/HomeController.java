@@ -5,6 +5,7 @@ import com.psalles.multiWork.Home.Service.HomeService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,19 +20,19 @@ public class HomeController {
 
     private HomeService homeService;
 
-    @Value("${application.messages.title}")
+    @Value("${application.messages.title:default}")
     private Object message;
 
     HomeController(HomeService homeService) {
         this.homeService = homeService;
     }
 
-    @RequestMapping("/message")
+    @GetMapping("/message")
     Object getMessage() {
         return this.message;
     }
 
-    @RequestMapping("/videos")
+    @GetMapping("/videos")
     List<Video> getVideos() {
         return this.homeService.getVideos();
     }

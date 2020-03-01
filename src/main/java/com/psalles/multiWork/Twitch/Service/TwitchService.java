@@ -24,7 +24,6 @@ public class TwitchService {
     private final String FOLLOWS_BASE_URL;
     private final String EXTENSIONS_BASE_URL;
     private final BaseHttpClient httpClient;
-    private String token;
 
     @Autowired
     public TwitchService(
@@ -42,27 +41,23 @@ public class TwitchService {
         this.httpClient = httpClient;
     }
 
-    public User getUserInfoFromAuthToken() {
-        UserResponse response = httpClient.makeCall(HttpMethod.GET, USERS_BASE_URL, UserResponse.class, null, getAuthHeaders());
+    public User getUserInfoFromAuthToken(String token) {
+        UserResponse response = httpClient.makeCall(HttpMethod.GET, USERS_BASE_URL, UserResponse.class, null, getAuthHeaders(token));
         return response.getData().get(0);
     }
 
-    public void saveToken(String token) {
-        this.token = token;
-    }
-
-    public List<Video> getUserVideos(String userId) throws IOException {
+    public List<Video> getUserVideos(String token, String userId) throws IOException {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("user_id", Collections.singletonList(userId));
         String url = VIDEOS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
-        VideoResponse response = httpClient.makeCall(HttpMethod.GET, url, VideoResponse.class, null, getAuthHeaders());
+        VideoResponse response = httpClient.makeCall(HttpMethod.GET, url, VideoResponse.class, null, getAuthHeaders(token));
         return response.getData();
     }
 
-    public List<EnrichedStreamer> getStreamingStatus(String userId) throws IOException {
-        List<String> subscriptions = getSubscriptions(userId).stream().map(Subscription::getToName).collect(Collectors.toList());
-        List<Streamer> streamers = getUsers(subscriptions);
-        List<LiveData> streams = getStreams(subscriptions);
+    public List<EnrichedStreamer> getStreamingStatus(String token, String userId) throws IOException {
+        List<String> subscriptions = getSubscriptions(token, userId).stream().map(Subscription::getToName).collect(Collectors.toList());
+        List<Streamer> streamers = getUsers(token, subscriptions);
+        List<LiveData> streams = getStreams(token, subscriptions);
 
         List<EnrichedStreamer> enrichedStreamers = new ArrayList<>();
         streamers.forEach(
@@ -77,8 +72,8 @@ public class TwitchService {
     }
 
 
-    public Map<String, List<Extension>> getUsersPanelExtensions(String userId) throws IOException {
-        List<String> subscriptions = getSubscriptions(userId).stream().map(Subscription::getToId).collect(toList());
+    public Map<String, List<Extension>> getUsersPanelExtensions(String token, String userId) throws IOException {
+        List<String> subscriptions = getSubscriptions(token, userId).stream().map(Subscription::getToId).collect(toList());
         Map<String, List<Extension>> extensionMap = new HashMap<>();
 
         CompletableFuture[] futures = new CompletableFuture[subscriptions.size()];
@@ -86,7 +81,7 @@ public class TwitchService {
             String subscription = subscriptions.get(i);
             futures[i] = CompletableFuture.runAsync(() ->
                     {
-                        ExtensionResponse response = httpClient.makeCall(HttpMethod.GET, EXTENSIONS_BASE_URL + "user_id=" + subscription, ExtensionResponse.class, null, getAuthHeaders());
+                        ExtensionResponse response = httpClient.makeCall(HttpMethod.GET, EXTENSIONS_BASE_URL + "user_id=" + subscription, ExtensionResponse.class, null, getAuthHeaders(token));
                         extensionMap.put(subscription,
                                 response.getData().getPanel().entrySet().stream().map(Map.Entry::getValue).filter(extension -> extension.getId() != null).collect(toList()));
                     }
@@ -100,32 +95,32 @@ public class TwitchService {
      XXXXXXXXXXXXXXXXXXXXXXX       PRIVATE     XXXXXXXXXXXXXXXXXXXXXXXXXXXX
      **********************************************************************/
 
-    private List<Streamer> getUsers(List<String> usernames) throws IOException {
+    private List<Streamer> getUsers(String token, List<String> usernames) throws IOException {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("login", usernames);
         String url = USERS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
-        StreamerResponse response = httpClient.makeCall(HttpMethod.GET, url, StreamerResponse.class, null, getAuthHeaders());
+        StreamerResponse response = httpClient.makeCall(HttpMethod.GET, url, StreamerResponse.class, null, getAuthHeaders(token));
         return response.getData();
     }
 
-    private List<LiveData> getStreams(List<String> ids) throws IOException {
+    private List<LiveData> getStreams(String token, List<String> ids) throws IOException {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("user_login", ids);
         String url = STREAMS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
-        LiveDataResponse response = httpClient.makeCall(HttpMethod.GET, url, LiveDataResponse.class, null, getAuthHeaders());
+        LiveDataResponse response = httpClient.makeCall(HttpMethod.GET, url, LiveDataResponse.class, null, getAuthHeaders(token));
         return response.getData();
     }
 
-    private List<Subscription> getSubscriptions(String id) throws IOException {
+    private List<Subscription> getSubscriptions(String token, String id) throws IOException {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("from_id", Collections.singletonList(id));
         String url = FOLLOWS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
-        SubscriptionResponse response = httpClient.makeCall(HttpMethod.GET, url, SubscriptionResponse.class, null, getAuthHeaders());
+        SubscriptionResponse response = httpClient.makeCall(HttpMethod.GET, url, SubscriptionResponse.class, null, getAuthHeaders(token));
         return response.getData();
     }
 
 
-    private HttpHeaders getAuthHeaders() {
+    private HttpHeaders getAuthHeaders(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
         return headers;

@@ -28,35 +28,28 @@ public class TwitchController {
         this.twitchService = twitchService;
     }
 
-    // TODO FIX THIS
-    @ApiOperation("Save my token")
-    @PostMapping("/login")
-    public void login(@RequestBody String token) {
-        twitchService.saveToken(token);
-    }
-
     @ApiOperation("Get my data")
     @GetMapping("/getMyUser")
-    public User getMyData() {
-        return twitchService.getUserInfoFromAuthToken();
+    public User getMyData(@RequestHeader("twitch") String token) {
+        return twitchService.getUserInfoFromAuthToken(token);
     }
 
     @ApiOperation("Get user videos")
     @GetMapping("/user/{userId}/videos")
-    public List<Video> getVideos(@PathVariable String userId) throws IOException {
-        return twitchService.getUserVideos(userId);
+    public List<Video> getVideos(@RequestHeader("twitch") String token, @PathVariable String userId) throws IOException {
+        return twitchService.getUserVideos(token, userId);
     }
 
     @ApiOperation("Get streaming status of {userId}'s subscription list")
     @GetMapping("/streams/user/{userId}")
-    public List<EnrichedStreamer> getStreamingStatus(@PathVariable String userId) throws IOException {
-        return twitchService.getStreamingStatus(userId);
+    public List<EnrichedStreamer> getStreamingStatus(@RequestHeader("twitch") String token, @PathVariable String userId) throws IOException {
+        return twitchService.getStreamingStatus(token, userId);
     }
 
     @ApiOperation("Get users panel extensions")
     @GetMapping("/extensions/user/{userId}")
     @Cacheable("extensions")
-    public Map<String, List<Extension>> getUsersPanelExtensions(@PathVariable String userId) throws IOException {
-        return twitchService.getUsersPanelExtensions(userId);
+    public Map<String, List<Extension>> getUsersPanelExtensions(@RequestHeader("twitch") String token, @PathVariable String userId) throws IOException {
+        return twitchService.getUsersPanelExtensions(token, userId);
     }
 }
