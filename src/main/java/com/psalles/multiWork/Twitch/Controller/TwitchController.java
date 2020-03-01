@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Api(description = "Calls Twitch API for basic data on streams")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://51.178.84.104")
 @RequestMapping("/twitch")
 public class TwitchController {
 

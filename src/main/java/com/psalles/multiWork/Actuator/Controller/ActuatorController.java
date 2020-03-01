@@ -13,7 +13,7 @@ import java.util.List;
 
 @Api(description = "Calls Spring Boot Actuators for metrics data")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://51.178.84.104")
 @RequestMapping("/actuators")
 public class ActuatorController {
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RefreshScope
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://51.178.84.104")
 @RequestMapping("/home")
 public class HomeController {
 

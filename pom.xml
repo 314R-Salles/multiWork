@@ -17,9 +17,9 @@
     <properties>
         <java.version>1.8</java.version>
         <mariadb-java-client.version>2.2.1</mariadb-java-client.version>
-        <datasource.url>jdbc:mysql://localhost/demo</datasource.url>
-        <datasource.username>demo</datasource.username>
-        <datasource.password>demo</datasource.password>
+        <!--<datasource.url>jdbc:mysql://localhost/demo</datasource.url>-->
+        <!--<datasource.username>demo</datasource.username>-->
+        <!--<datasource.password>demo</datasource.password>-->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -28,10 +28,10 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--</dependency>-->
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->
         <!--<artifactId>spring-boot-starter-security</artifactId>-->
@@ -72,17 +72,17 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<scope>runtime</scope>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <version>${mariadb-java-client.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.mariadb.jdbc</groupId>-->
+            <!--<artifactId>mariadb-java-client</artifactId>-->
+            <!--<version>${mariadb-java-client.version}</version>-->
+        <!--</dependency>-->
 
         <!--Swagger dependencies-->
         <!--Actual Swagger-->

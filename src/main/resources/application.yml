@@ -1,14 +1,14 @@
-spring:
-    jpa:
-        hibernate:
-            ddl-auto: update
-
-        show-sql: true
-
-    datasource:
-        url: jdbc:mysql://localhost/demo?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
-        username: demo
-        password: demo
+#spring:
+#    jpa:
+#        hibernate:
+#            ddl-auto: update
+#
+#        show-sql: true
+#
+#    datasource:
+#        url: jdbc:mysql://localhost/demo?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
+#        username: demo
+#        password: demo
 
 logging:
     level:
