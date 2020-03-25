@@ -18,26 +18,26 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class TwitchService {
-    private final String STREAMS_BASE_URL;
-    private final String USERS_BASE_URL;
-    private final String VIDEOS_BASE_URL;
-    private final String FOLLOWS_BASE_URL;
-    private final String EXTENSIONS_BASE_URL;
+
+    @Value("${twitch.url.streams_base_url}")
+    private String STREAMS_BASE_URL;
+
+    @Value("${twitch.url.users_base_url}")
+    private String USERS_BASE_URL;
+
+    @Value("${twitch.url.videos_base_url}")
+    private String VIDEOS_BASE_URL;
+
+    @Value("${twitch.url.follows_base_url}")
+    private String FOLLOWS_BASE_URL;
+
+    @Value("${twitch.url.extensions_base_url}")
+    private String EXTENSIONS_BASE_URL;
+
     private final BaseHttpClient httpClient;
 
     @Autowired
-    public TwitchService(
-            @Value("${twitch.url.streams_base_url}") String streamUrl,
-            @Value("${twitch.url.users_base_url}") String userUrl,
-            @Value("${twitch.url.videos_base_url}") String videoUrl,
-            @Value("${twitch.url.follows_base_url}") String followsBaseUrl,
-            @Value("${twitch.url.extensions_base_url}") String extensionsBaseUrl,
-            BaseHttpClient httpClient) {
-        this.STREAMS_BASE_URL = streamUrl;
-        this.USERS_BASE_URL = userUrl;
-        this.FOLLOWS_BASE_URL = followsBaseUrl;
-        this.EXTENSIONS_BASE_URL = extensionsBaseUrl;
-        this.VIDEOS_BASE_URL = videoUrl;
+    public TwitchService(BaseHttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
@@ -118,6 +118,7 @@ public class TwitchService {
         SubscriptionResponse response = httpClient.makeCall(HttpMethod.GET, url, SubscriptionResponse.class, null, getAuthHeaders(token));
         return response.getData();
     }
+
 
 
     private HttpHeaders getAuthHeaders(String token) {

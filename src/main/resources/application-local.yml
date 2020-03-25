@@ -10,6 +10,7 @@
 #        username: demo
 #        password: demo
 
+
 logging:
     level:
         com.psalles.multiWork : debug
@@ -17,26 +18,10 @@ logging:
         console: ${CONSOLE_LOG_PATTERN:%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
 
 
-crossOrigin: http://51.178.84.104
 
-# Actuators
-management:
-    server:
-        port: 8081
-    endpoints:
-        web:
-            exposure:
-                include: "*"
+#Surcharge pour le profil local
+
+crossOrigin: http://localhost:4200
 
 actuator:
     base_url: http://localhost:8081/actuator/
-
-twitch:
-# Api url constants
-    url:
-        streams_base_url: https://api.twitch.tv/helix/streams?
-        users_base_url: https://api.twitch.tv/helix/users?
-        follows_base_url: https://api.twitch.tv/helix/users/follows?
-        videos_base_url: https://api.twitch.tv/helix/videos?
-        extensions_base_url: https://api.twitch.tv/helix/users/extensions?
-        games_base_url: https://api.twitch.tv/helix/games?
