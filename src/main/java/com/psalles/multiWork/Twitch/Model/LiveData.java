@@ -10,33 +10,33 @@ public class LiveData {
 
 
     @JsonAlias(value = "id")
-    private String liveId;
+    protected String liveId;
 
     @JsonAlias(value = "user_id")
-    private String userId;
+    protected String userId;
 
     @JsonAlias(value = "user_name")
-    private String username;
+    protected String username;
 
     @JsonAlias(value = "game_id")
-    private String gameId;
+    protected String gameId;
 
     @JsonAlias(value = "type")
-    private String type;
+    protected String type;
 
     @JsonAlias(value = "title")
-    private String title;
+    protected String title;
 
     @JsonAlias(value = "viewer_count")
-    private String viewerCount;
+    protected String viewerCount;
 
     @JsonAlias(value = "started_at")
-    private String startTime;
+    protected String startTime;
 
     @JsonAlias(value = "language")
-    private String language;
+    protected String language;
 
     @JsonAlias(value = "thumbnail_url")
-    private String thumbnailUrl;
+    protected String thumbnailUrl;
 
 }

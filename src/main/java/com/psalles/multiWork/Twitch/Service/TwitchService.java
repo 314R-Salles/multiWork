@@ -28,6 +28,9 @@ public class TwitchService {
     @Value("${twitch.url.videos_base_url}")
     private String VIDEOS_BASE_URL;
 
+    @Value("${twitch.url.games_base_url}")
+    private String GAME_BASE_URL;
+
     @Value("${twitch.url.follows_base_url}")
     private String FOLLOWS_BASE_URL;
 
@@ -49,6 +52,7 @@ public class TwitchService {
     public List<Video> getUserVideos(String token, String userId) throws IOException {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("user_id", Collections.singletonList(userId));
+        parameters.put("first", Collections.singletonList("100"));
         String url = VIDEOS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
         VideoResponse response = httpClient.makeCall(HttpMethod.GET, url, VideoResponse.class, null, getAuthHeaders(token));
         return response.getData();
@@ -57,14 +61,16 @@ public class TwitchService {
     public List<EnrichedStreamer> getStreamingStatus(String token, String userId) throws IOException {
         List<String> subscriptions = getSubscriptions(token, userId).stream().map(Subscription::getToName).collect(Collectors.toList());
         List<Streamer> streamers = getUsers(token, subscriptions);
+
         List<LiveData> streams = getStreams(token, subscriptions);
+        List<EnrichedLiveData> enrichedStreams = completeStreams(token, streams);
 
         List<EnrichedStreamer> enrichedStreamers = new ArrayList<>();
         streamers.forEach(
                 streamer ->
                         enrichedStreamers.add(
                                 new EnrichedStreamer(streamer,
-                                        streams.stream()
+                                        enrichedStreams.stream()
                                                 .filter(liveData -> liveData.getUsername().equals(streamer.displayName))
                                                 .findFirst()
                                                 .orElse(null))));
@@ -114,9 +120,22 @@ public class TwitchService {
     private List<Subscription> getSubscriptions(String token, String id) throws IOException {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("from_id", Collections.singletonList(id));
+        parameters.put("first", Collections.singletonList("100"));
         String url = FOLLOWS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
         SubscriptionResponse response = httpClient.makeCall(HttpMethod.GET, url, SubscriptionResponse.class, null, getAuthHeaders(token));
         return response.getData();
+    }
+
+    private List<EnrichedLiveData> completeStreams(String token, List<LiveData> streams) throws IOException {
+        HashMap<String, List<String>> parameters = new HashMap<>();
+        parameters.put("id", streams.stream().map(LiveData::getGameId).collect(toList()));
+        String url = GAME_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
+        GameResponse response = httpClient.makeCall(HttpMethod.GET, url, GameResponse.class, null, getAuthHeaders(token));
+
+        return streams.stream().map(stream ->
+                new EnrichedLiveData(stream,
+                response.getData().stream().filter(game -> game.getId().equals(stream.getGameId())).findFirst().get())).collect(toList());
+
     }
 
 

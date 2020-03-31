@@ -8,10 +8,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EnrichedStreamer extends Streamer {
-    private LiveData live;
+    private EnrichedLiveData live;
 
 
-    public EnrichedStreamer(Streamer base, LiveData live) {
+    public EnrichedStreamer(Streamer base, EnrichedLiveData live) {
         this.userId = base.userId;
         this.username = base.username;
         this.displayName = base.displayName;
