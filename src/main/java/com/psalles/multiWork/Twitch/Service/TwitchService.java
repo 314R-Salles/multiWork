@@ -37,6 +37,9 @@ public class TwitchService {
     @Value("${twitch.url.extensions_base_url}")
     private String EXTENSIONS_BASE_URL;
 
+    @Value("${twitch.client-id}")
+    private String CLIENT_ID;
+
     private final BaseHttpClient httpClient;
 
     @Autowired
@@ -139,10 +142,10 @@ public class TwitchService {
     }
 
 
-
     private HttpHeaders getAuthHeaders(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
+        headers.add("Client-ID", CLIENT_ID);
         return headers;
     }
 

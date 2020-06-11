@@ -40,3 +40,4 @@ twitch:
         videos_base_url: https://api.twitch.tv/helix/videos?
         extensions_base_url: https://api.twitch.tv/helix/users/extensions?
         games_base_url: https://api.twitch.tv/helix/games?
+    client-id: 048o30kiq54suyv43jio7boaknv8e2
