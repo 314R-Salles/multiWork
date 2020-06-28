@@ -13,6 +13,6 @@ public class CachingConfig {
     // TODO Config pas adaptée. (mais suffisante)
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("extensions");
+        return new ConcurrentMapCacheManager("extensions", "user");
     }
 }

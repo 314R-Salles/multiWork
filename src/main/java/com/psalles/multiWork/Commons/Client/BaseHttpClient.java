@@ -17,8 +17,8 @@ import static org.apache.logging.log4j.util.Strings.EMPTY;
 @Component
 public class BaseHttpClient {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    private ObjectMapper mapper = new ObjectMapper();
-    private RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public <R> R makeCall(HttpMethod method,
                           String url,
@@ -34,15 +34,18 @@ public class BaseHttpClient {
             ResponseEntity<String> responseEntity = sendHttpRequest(method, url, extraHeaders, jsonRequest);
             httpStatus = responseEntity.getStatusCode();
             responseBody = responseEntity.hasBody() ? responseEntity.getBody() : EMPTY;
+
+            return parseResponseFromJson(responseBody, responseClass);
+
         } catch (HttpClientErrorException | HttpServerErrorException restEx) {
             httpStatus = restEx.getStatusCode();
             responseBody = restEx.getResponseBodyAsString();
             LOGGER.debug("Following ERROR response has been received [{}] : {}", httpStatus, responseBody);
+            throw restEx;
+        } catch (Exception e) {
+            LOGGER.debug("Error while parsing response", e);
+            throw e;
         }
-
-        R response = parseResponseFromJson(responseBody, responseClass);
-
-        return response;
     }
 
     private String formatRequestToJson(Object request) {
@@ -53,6 +56,7 @@ public class BaseHttpClient {
         }
         return null;
     }
+
     private <R> R parseResponseFromJson(String responseBody, Class<R> responseClass) {
         try {
             return mapper.readValue(responseBody, responseClass);

@@ -32,7 +32,6 @@ actuator:
     base_url: http://localhost:8081/actuator/
 
 twitch:
-# Api url constants
     url:
         streams_base_url: https://api.twitch.tv/helix/streams?
         users_base_url: https://api.twitch.tv/helix/users?
@@ -40,4 +39,6 @@ twitch:
         videos_base_url: https://api.twitch.tv/helix/videos?
         extensions_base_url: https://api.twitch.tv/helix/users/extensions?
         games_base_url: https://api.twitch.tv/helix/games?
+
+        logout: https://id.twitch.tv/oauth2/revoke?
     client-id: 048o30kiq54suyv43jio7boaknv8e2
