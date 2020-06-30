@@ -1,0 +1,13 @@
+actuator:
+  base_url: https://psalles.ovh:8081/actuator
+
+
+crossOrigin: https://psalles.ovh, https://www.psalles.ovh
+
+server:
+  ssl:
+    enabled: true
+    key-store: /etc/letsencrypt/live/psalles.ovh/keystore.p12
+    key-store-password: psalles
+    keyStoreType: PKCS12
+    keyAlias: tomcat

@@ -12,8 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
-    @Value("${crossOrigin}")
-    String crossOrigin;
+    @Value("#{'${crossOrigin}'.split(',')}")
+    private String[] crossOrigin;
 
 
     @Bean
