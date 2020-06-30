@@ -11,34 +11,42 @@
 #        password: demo
 
 logging:
-    level:
-        com.psalles.multiWork : debug
-    pattern:
-        console: ${CONSOLE_LOG_PATTERN:%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
+  level:
+    com.psalles.multiWork: debug
+  pattern:
+    console: ${CONSOLE_LOG_PATTERN:%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
 
 
 crossOrigin: http://51.178.84.104
 
 # Actuators
 management:
-    server:
-        port: 8081
-    endpoints:
-        web:
-            exposure:
-                include: "*"
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 actuator:
-    base_url: http://localhost:8081/actuator/
+  base_url: http://localhost:8081/actuator/
 
 twitch:
-    url:
-        streams_base_url: https://api.twitch.tv/helix/streams?
-        users_base_url: https://api.twitch.tv/helix/users?
-        follows_base_url: https://api.twitch.tv/helix/users/follows?
-        videos_base_url: https://api.twitch.tv/helix/videos?
-        extensions_base_url: https://api.twitch.tv/helix/users/extensions?
-        games_base_url: https://api.twitch.tv/helix/games?
+  url:
+    streams_base_url: https://api.twitch.tv/helix/streams?
+    users_base_url: https://api.twitch.tv/helix/users?
+    follows_base_url: https://api.twitch.tv/helix/users/follows?
+    videos_base_url: https://api.twitch.tv/helix/videos?
+    extensions_base_url: https://api.twitch.tv/helix/users/extensions?
+    games_base_url: https://api.twitch.tv/helix/games?
 
-        logout: https://id.twitch.tv/oauth2/revoke?
-    client-id: 048o30kiq54suyv43jio7boaknv8e2
+    logout: https://id.twitch.tv/oauth2/revoke?
+  client-id: 048o30kiq54suyv43jio7boaknv8e2
+
+server:
+  ssl:
+    enabled: true
+    key-store: /etc/letsencrypt/live/psalles.ovh/keystore.p12
+    key-store-password: psalles
+    keyStoreType: PKCS12
+    keyAlias: tomcat
