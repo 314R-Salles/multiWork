@@ -28,6 +28,6 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
         // and will wait from messages from the server.
 
         registry.setApplicationDestinationPrefixes("/app")
-                .enableSimpleBroker("/chat");
+                .enableSimpleBroker("/connect4");
     }
 }

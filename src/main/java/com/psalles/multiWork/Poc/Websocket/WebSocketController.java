@@ -15,8 +15,8 @@ public class WebSocketController {
         this.template = template;
     }
 
-    @MessageMapping("/send/message")
+    @MessageMapping("/send/connect4")
     public void onReceivedMessage(ConnectFourPayload message){
-        this.template.convertAndSend("/chat",  message);
+        this.template.convertAndSend("/connect4",  message);
     }
 }
