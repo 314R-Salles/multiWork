@@ -37,3 +37,14 @@ twitch:
 
     logout: https://id.twitch.tv/oauth2/revoke?
   client-id: 048o30kiq54suyv43jio7boaknv8e2
+
+
+spring.mail:
+  host: smtp.gmail.com
+  port: 587
+  username: ${username}
+  password: ${password}
+  properties:
+    mail.smtp:
+      auth: true
+      starttls.enable: true
