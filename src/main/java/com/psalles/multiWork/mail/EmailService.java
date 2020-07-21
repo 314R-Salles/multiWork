@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
+import java.util.Map;
 
 @Component
 public class EmailService {
@@ -17,7 +17,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendBugReports(List<ByteArrayResource> attachments) throws MessagingException {
+    public void sendBugReports(Map<Long, ByteArrayResource> attachments) throws MessagingException {
 
         MimeMessage message = emailSender.createMimeMessage();
 
@@ -28,9 +28,9 @@ public class EmailService {
         helper.setSubject("subject");
         helper.setText("Liste des bug reports");
 
-        attachments.forEach(attachment -> {
+        attachments.forEach((id, attachment) -> {
             try {
-                helper.addAttachment("Bug-report-" + attachments.indexOf(attachment), attachment);
+                helper.addAttachment("Bug-report-" + id + ".jpg", attachment);
             } catch (MessagingException e) {
                 e.printStackTrace();
             }

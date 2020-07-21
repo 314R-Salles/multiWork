@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BugReportService {
@@ -44,12 +45,12 @@ public class BugReportService {
     public void sendLastReports() {
 
         List<Image> images = imageRepository.findAllByReported(false);
-        List<ByteArrayResource> attachments = new ArrayList<>();
+        Map<Long, ByteArrayResource> attachments = new HashMap<>();
 
-        images.stream().map(Image::getB64string).forEach(
-                b64 -> {
-                    byte[] decodedBytes = Base64.getDecoder().decode(b64);
-                    attachments.add(new ByteArrayResource(decodedBytes));
+        images.forEach(
+                image -> {
+                    byte[] decodedBytes = Base64.getDecoder().decode(image.getB64string());
+                    attachments.put(image.getId(),new ByteArrayResource(decodedBytes));
                 });
         if (images.size() > 0) {
             try {
