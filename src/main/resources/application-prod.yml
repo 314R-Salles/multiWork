@@ -1,3 +1,15 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+    show-sql: false
+
+  datasource:
+    url: jdbc:mysql://localhost/multiwork?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
+    username: ${usernameDB}
+    password: ${passwordDB}
+
 actuator:
   base_url: https://psalles.ovh:8081/actuator
 
