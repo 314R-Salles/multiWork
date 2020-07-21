@@ -25,8 +25,7 @@ public class EmailService {
 
         helper.setFrom("multiwork");
         helper.setTo("thehauntedcomputer@gmail.com");
-        helper.setSubject("subject");
-        helper.setText("Liste des bug reports");
+        helper.setSubject("Liste des bug reports");
 
         attachments.forEach((id, attachment) -> {
             try {

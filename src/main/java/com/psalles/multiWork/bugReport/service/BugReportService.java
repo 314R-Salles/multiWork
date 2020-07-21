@@ -41,7 +41,7 @@ public class BugReportService {
 
 
     // Cron
-    @Scheduled(fixedDelay = 1000 * 40)  //40s
+    @Scheduled(fixedDelay = 1000 * 60 * 60)  // 1h
     public void sendLastReports() {
 
         List<Image> images = imageRepository.findAllByReported(false);
