@@ -48,3 +48,6 @@ spring.mail:
     mail.smtp:
       auth: true
       starttls.enable: true
+
+cron:
+  duration: 45000
