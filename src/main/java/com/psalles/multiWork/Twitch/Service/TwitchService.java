@@ -1,9 +1,9 @@
 package com.psalles.multiWork.Twitch.Service;
 
 import com.psalles.multiWork.Twitch.Model.EnrichedStreamer;
-import com.psalles.multiWork.Twitch.Model.Extension;
-import com.psalles.multiWork.Twitch.Model.User;
-import com.psalles.multiWork.Twitch.Model.Video;
+import com.psalles.multiWork.Twitch.Model.ExtensionResponse;
+import com.psalles.multiWork.Twitch.Model.UserResponse;
+import com.psalles.multiWork.Twitch.Model.VideoResponse;
 import com.psalles.multiWork.Twitch.TwitchAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -26,11 +26,11 @@ public class TwitchService {
     }
 
     @Cacheable("user")
-    public User getUserInfoFromAuthToken(String token) {
+    public UserResponse.User getUserInfoFromAuthToken(String token) {
         return this.twitchAdapter.getUserInfoFromAuthToken(token);
     }
 
-    public List<Video> getStreamerVideos(String token, String streamerId) {
+    public List<VideoResponse.Video> getStreamerVideos(String token, String streamerId) {
         return this.twitchAdapter.getStreamerVideos(token, streamerId);
     }
 
@@ -39,7 +39,7 @@ public class TwitchService {
     }
 
     @Cacheable("extensions")
-    public Map<String, List<Extension>> getUsersPanelExtensions(String token) {
+    public Map<String, List<ExtensionResponse.Extension>> getUsersPanelExtensions(String token) {
         return this.twitchAdapter.getUsersPanelExtensions(token, getUserInfoFromAuthToken(token).getUserId());
     }
 

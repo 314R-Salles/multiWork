@@ -7,12 +7,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EnrichedLiveData extends LiveData {
+public class EnrichedLiveData extends LiveDataResponse.LiveData {
 
     private String gameName;
     private String gameIconUrl;
 
-    public EnrichedLiveData(LiveData base, Game game) {
+    public EnrichedLiveData(LiveDataResponse.LiveData base, GameResponse.Game game) {
         liveId = base.liveId;
         userId = base.userId;
         username = base.username;

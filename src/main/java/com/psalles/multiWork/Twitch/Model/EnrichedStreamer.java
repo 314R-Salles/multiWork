@@ -7,11 +7,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EnrichedStreamer extends Streamer {
+public class EnrichedStreamer extends StreamerResponse.Streamer {
     private EnrichedLiveData live;
 
 
-    public EnrichedStreamer(Streamer base, EnrichedLiveData live) {
+    public EnrichedStreamer(StreamerResponse.Streamer base, EnrichedLiveData live) {
         this.userId = base.userId;
         this.username = base.username;
         this.displayName = base.displayName;

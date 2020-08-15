@@ -45,13 +45,13 @@ public class TwitchAdapter implements TwitchPort {
     }
 
     @Override
-    public User getUserInfoFromAuthToken(String token) {
+    public UserResponse.User getUserInfoFromAuthToken(String token) {
         UserResponse response = httpClient.makeCall(HttpMethod.GET, USERS_BASE_URL, UserResponse.class, null, getAuthHeaders(token));
         return response.getData().get(0);
     }
 
     @Override
-    public List<Video> getStreamerVideos(String token, String streamerId) {
+    public List<VideoResponse.Video> getStreamerVideos(String token, String streamerId) {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("user_id", singletonList(streamerId));
         parameters.put("first", singletonList("100"));
@@ -62,10 +62,10 @@ public class TwitchAdapter implements TwitchPort {
 
     @Override
     public List<EnrichedStreamer> getAllStreamingInformation(String token, String userId) {
-        List<String> subscriptions = getSubscriptions(token, userId).stream().map(Subscription::getToName).collect(Collectors.toList());
-        List<Streamer> streamers = getUsers(token, subscriptions);
+        List<String> subscriptions = getSubscriptions(token, userId).stream().map(SubscriptionResponse.Subscription::getToName).collect(Collectors.toList());
+        List<StreamerResponse.Streamer> streamers = getUsers(token, subscriptions);
 
-        List<LiveData> streams = getStreams(token, subscriptions);
+        List<LiveDataResponse.LiveData> streams = getStreams(token, subscriptions);
         List<EnrichedLiveData> enrichedStreams = completeStreams(token, streams);
 
         List<EnrichedStreamer> enrichedStreamers = new ArrayList<>();
@@ -80,9 +80,9 @@ public class TwitchAdapter implements TwitchPort {
         return enrichedStreamers;
     }
 
-    public Map<String, List<Extension>> getUsersPanelExtensions(String token, String userId) {
-        List<String> subscriptions = getSubscriptions(token, userId).stream().map(Subscription::getToId).collect(toList());
-        Map<String, List<Extension>> extensionMap = new HashMap<>();
+    public Map<String, List<ExtensionResponse.Extension>> getUsersPanelExtensions(String token, String userId) {
+        List<String> subscriptions = getSubscriptions(token, userId).stream().map(SubscriptionResponse.Subscription::getToId).collect(toList());
+        Map<String, List<ExtensionResponse.Extension>> extensionMap = new HashMap<>();
 
         CompletableFuture[] futures = new CompletableFuture[subscriptions.size()];
         for (int i = 0; i < subscriptions.size(); i++) {
@@ -112,7 +112,7 @@ public class TwitchAdapter implements TwitchPort {
      XXXXXXXXXXXXXXXXXXXXXXX       PRIVATE     XXXXXXXXXXXXXXXXXXXXXXXXXXXX
      **********************************************************************/
 
-    private List<Streamer> getUsers(String token, List<String> usernames) {
+    private List<StreamerResponse.Streamer> getUsers(String token, List<String> usernames) {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("login", usernames);
         String url = USERS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
@@ -120,7 +120,7 @@ public class TwitchAdapter implements TwitchPort {
         return response.getData();
     }
 
-    private List<LiveData> getStreams(String token, List<String> ids) {
+    private List<LiveDataResponse.LiveData> getStreams(String token, List<String> ids) {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("user_login", ids);
         String url = STREAMS_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
@@ -128,7 +128,7 @@ public class TwitchAdapter implements TwitchPort {
         return response.getData();
     }
 
-    private List<Subscription> getSubscriptions(String token, String userId) {
+    private List<SubscriptionResponse.Subscription> getSubscriptions(String token, String userId) {
         HashMap<String, List<String>> parameters = new HashMap<>();
         parameters.put("from_id", singletonList(userId));
         parameters.put("first", singletonList("100"));
@@ -137,9 +137,9 @@ public class TwitchAdapter implements TwitchPort {
         return response.getData();
     }
 
-    private List<EnrichedLiveData> completeStreams(String token, List<LiveData> streams) {
+    private List<EnrichedLiveData> completeStreams(String token, List<LiveDataResponse.LiveData> streams) {
         HashMap<String, List<String>> parameters = new HashMap<>();
-        parameters.put("id", streams.stream().map(LiveData::getGameId).collect(toList()));
+        parameters.put("id", streams.stream().map(LiveDataResponse.LiveData::getGameId).collect(toList()));
         String url = GAME_BASE_URL + ParameterStringBuilder.getParamsStringList(parameters);
         GameResponse response = httpClient.makeCall(HttpMethod.GET, url, GameResponse.class, null, getAuthHeaders(token));
 

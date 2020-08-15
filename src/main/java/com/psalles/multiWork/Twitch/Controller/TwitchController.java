@@ -1,9 +1,9 @@
 package com.psalles.multiWork.Twitch.Controller;
 
 import com.psalles.multiWork.Twitch.Model.EnrichedStreamer;
-import com.psalles.multiWork.Twitch.Model.Extension;
-import com.psalles.multiWork.Twitch.Model.User;
-import com.psalles.multiWork.Twitch.Model.Video;
+import com.psalles.multiWork.Twitch.Model.ExtensionResponse;
+import com.psalles.multiWork.Twitch.Model.UserResponse;
+import com.psalles.multiWork.Twitch.Model.VideoResponse;
 import com.psalles.multiWork.Twitch.Service.TwitchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,13 +27,13 @@ public class TwitchController {
 
     @ApiOperation("Get my data")
     @GetMapping("/getMyUser")
-    public User getMyData(@RequestHeader("twitch") String token) {
+    public UserResponse.User getMyData(@RequestHeader("twitch") String token) {
         return twitchService.getUserInfoFromAuthToken(token);
     }
 
     @ApiOperation("Get user videos")
     @GetMapping("/user/{streamerId}/videos")
-    public List<Video> getVideos(@RequestHeader("twitch") String token, @PathVariable String streamerId) {
+    public List<VideoResponse.Video> getVideos(@RequestHeader("twitch") String token, @PathVariable String streamerId) {
         return twitchService.getStreamerVideos(token, streamerId);
     }
 
@@ -51,7 +51,7 @@ public class TwitchController {
 
     @ApiOperation("Get users panel extensions")
     @GetMapping("/extensions")
-    public Map<String, List<Extension>> getUsersPanelExtensions(@RequestHeader("twitch") String token) {
+    public Map<String, List<ExtensionResponse.Extension>> getUsersPanelExtensions(@RequestHeader("twitch") String token) {
         return twitchService.getUsersPanelExtensions(token);
     }
 }
