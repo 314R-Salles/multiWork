@@ -17,8 +17,12 @@ import static org.apache.logging.log4j.util.Strings.EMPTY;
 @Component
 public class BaseHttpClient {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
     private final RestTemplate restTemplate = new RestTemplate();
+
+    public BaseHttpClient(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     public <R> R makeCall(HttpMethod method,
                           String url,
