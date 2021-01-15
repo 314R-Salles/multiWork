@@ -59,8 +59,9 @@ public class ParameterStringBuilder {
             for (Map.Entry<String, List<String>> entry : params.entrySet()) {
                 result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
                 result.append("=");
+                // Stop encoder alors que ça me sert à rien (getVideos attend des ",")
                 for (String paramValue : entry.getValue()) {
-                    result.append(URLEncoder.encode(paramValue, "UTF-8"));
+                    result.append(paramValue);
                     result.append(",");
                 }
                 result.deleteCharAt(result.length() - 1);

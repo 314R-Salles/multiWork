@@ -21,7 +21,15 @@ logging:
 
 #Surcharge pour le profil local
 
-crossOrigin: http://localhost:4200
+crossOrigin: https://localhost:4200
 
 actuator:
     base_url: http://localhost:8081/actuator/
+
+server:
+    ssl:
+        enabled: true
+        key-store: classpath:test.jks
+        key-store-password: password
+        keyStoreType: JKS
+        keyAlias: test

@@ -1,4 +1,4 @@
-package com.psalles.multiWork.youtube;
+package com.psalles.multiWork.youtube.models.youtubeApiModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

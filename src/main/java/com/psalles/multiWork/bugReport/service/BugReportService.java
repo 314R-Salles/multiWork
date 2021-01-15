@@ -6,6 +6,7 @@ import com.psalles.multiWork.bugReport.model.Image;
 import com.psalles.multiWork.bugReport.repository.ImageRepository;
 import com.psalles.multiWork.mail.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Profile("!local")
 @Service
 public class BugReportService {
 

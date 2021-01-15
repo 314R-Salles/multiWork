@@ -1,6 +1,7 @@
 package com.psalles.multiWork.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
 @Component
+@Profile("!local")
 public class EmailService {
 
     @Autowired

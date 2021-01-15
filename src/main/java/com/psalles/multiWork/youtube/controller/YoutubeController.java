@@ -1,7 +1,8 @@
 package com.psalles.multiWork.youtube.controller;
 
-import com.psalles.multiWork.youtube.Channel;
-import com.psalles.multiWork.youtube.PlaylistItem;
+import com.psalles.multiWork.youtube.models.dtos.ChannelDto;
+import com.psalles.multiWork.youtube.models.dtos.PlaylistItemDto;
+import com.psalles.multiWork.youtube.models.dtos.VideoDto;
 import com.psalles.multiWork.youtube.service.YoutubeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,20 +28,26 @@ public class YoutubeController {
 
     @ApiOperation("get youtube")
     @GetMapping("/{channelId}")
-    public Channel getStreamingStatus(@PathVariable String channelId) {
-        return youtubeService.getChannel(channelId).getItems().get(0);
+    public ChannelDto getStreamingStatus(@PathVariable String channelId) {
+        return youtubeService.getChannel(channelId);
     }
 
     @ApiOperation("get youtube")
     @GetMapping("/{channelId}/linkedChannels")
-    public List<Channel> getLinkedChannels(@PathVariable String channelId) {
-        return youtubeService.getLinkedChannels(channelId).getItems();
+    public List<ChannelDto> getLinkedChannels(@PathVariable String channelId) {
+        return youtubeService.getLinkedChannels(channelId);
     }
 
 
     @ApiOperation("get youtube")
-    @GetMapping("/{channelId}/videos")
-    public List<PlaylistItem> getLastUploads(@PathVariable String channelId) {
-        return youtubeService.getRecentVideos(channelId).getItems();
+    @GetMapping("/{channelId}/allUploads")
+    public List<PlaylistItemDto> getLastUploads(@PathVariable String channelId) {
+        return youtubeService.getAllUploadedElements(channelId);
+    }
+
+    @ApiOperation("get youtube")
+    @GetMapping("/{channelId}/allVideos")
+    public List<VideoDto> getLastVideos(@PathVariable String channelId) {
+        return youtubeService.getVideos(channelId);
     }
 }

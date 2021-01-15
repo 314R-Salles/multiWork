@@ -1,8 +1,9 @@
-package com.psalles.multiWork.youtube;
+package com.psalles.multiWork.youtube.models.youtubeApiModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.api.services.youtube.model.ImageSettings;
 import com.google.api.services.youtube.model.PropertyValue;
+import com.psalles.multiWork.youtube.models.shared.Thumbnail;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class Channel {
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class Snippet {
+    public static class Snippet {
         private String title;
         private String description;
         private String customUrl;
@@ -37,13 +38,6 @@ public class Channel {
         private String country;
     }
 
-    @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Thumbnail {
-        private Long width;
-        private Long height;
-        private String url;
-    }
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -86,7 +80,5 @@ public class Channel {
         private String trackingAnalyticsAccountId;
         private String unsubscribedTrailer;
     }
-
-
 
 }

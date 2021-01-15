@@ -17,6 +17,7 @@ public class CachingConfig {
                 "extensions",
                 "user",
                 "channels",
+                "uploadPlaylist",
                 "videos",
                 "linkedChannels"
         );
