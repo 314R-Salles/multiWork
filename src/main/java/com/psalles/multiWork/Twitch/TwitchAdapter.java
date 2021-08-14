@@ -149,11 +149,6 @@ public class TwitchAdapter implements TwitchPort {
 
     }
 
-    /**
-     * Bearer token is used to make requests on behalf of a user instead of on behalf of the application. (requests/min limitation)
-     * I think?
-     */
-
     private HttpHeaders getAuthHeaders(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);

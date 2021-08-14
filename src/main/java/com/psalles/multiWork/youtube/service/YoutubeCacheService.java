@@ -33,12 +33,11 @@ public class YoutubeCacheService {
      * Je ne veux pas tout mettre en cache.
      * <p>
      * Les personnes qui ont besoin de données pour peupler leur site internet ok.
-     * <p>
-     * Les personnes qui veulent afficher un nuage de mots de leurs tags non.
      */
 
     private final BaseHttpClient httpClient;
-
+    //    String key = "AIzaSyCM9nlF4Oa3ssHcZiuVZErxKJRzqASZ4Ac";
+    String key = "AIzaSyBki9jrSNFeLb1IWkx4sM9w2BrBjJQwhfE";
     String youtubeV3 = "https://www.googleapis.com/youtube/v3";
     String usefulPartsString = "brandingSettings,contentDetails,snippet,statistics";
     List<String> usefulParts = Arrays.asList(usefulPartsString.split(","));
@@ -64,22 +63,20 @@ public class YoutubeCacheService {
         return ChannelMapper.toDtos(response).get(0);
     }
 
-    // BROKEN... THANKS YOUTUBE
     @Cacheable(value = "linkedChannels", key = "{ #channelId}")
     public List<ChannelDto> getLinkedChannels(ChannelDto channel, String channelId) {
-//        List<String> channelIds = channel.getFeaturedChannelsUrls();
-//
-//        HashMap<String, List<String>> parameters = new HashMap<>();
-//        parameters.put("part", usefulParts);
-//        parameters.put("id", channelIds);
-//        parameters.put("key", singletonList(key));
-//
-//        String url = youtubeV3 + "/channels?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
-//
-//        ChannelResponse response = httpClient.makeCall(HttpMethod.GET, url, ChannelResponse.class, null, null);
-//
-//        return ChannelMapper.toDtos(response);
-        return null;
+        List<String> channelIds = channel.getFeaturedChannelsUrls();
+
+        HashMap<String, List<String>> parameters = new HashMap<>();
+        parameters.put("part", usefulParts);
+        parameters.put("id", channelIds);
+        parameters.put("key", singletonList(key));
+
+        String url = youtubeV3 + "/channels?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
+
+        ChannelResponse response = httpClient.makeCall(HttpMethod.GET, url, ChannelResponse.class, null, null);
+
+        return ChannelMapper.toDtos(response);
     }
 
     @Cacheable(value = "uploadPlaylist", key = "{ #channelId}")

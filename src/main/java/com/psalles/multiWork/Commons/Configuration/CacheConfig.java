@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableCaching
-public class CachingConfig {
+public class CacheConfig {
 
-    // TODO Config pas adaptée. (mais suffisante)
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager(

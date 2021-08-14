@@ -13,7 +13,6 @@ public class UserResponse {
 
     List<User> data;
 
-
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class User {
@@ -44,9 +43,6 @@ public class UserResponse {
 
         @JsonAlias(value = "view_count")
         private BigDecimal viewCount;
-
-        @JsonAlias(value = "email")
-        private String email;
     }
 
 }

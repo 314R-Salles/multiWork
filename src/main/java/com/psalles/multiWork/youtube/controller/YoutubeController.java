@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api
+@Api(description = " ", tags = "Youtube endpoints")
 @RestController
-@RequestMapping("/youtube/user")
+@RequestMapping("/youtube/channel")
 public class YoutubeController {
 
     private final YoutubeService youtubeService;
@@ -26,26 +26,25 @@ public class YoutubeController {
         this.youtubeService = youtubeService;
     }
 
-    @ApiOperation("get youtube")
+    @ApiOperation(value = "Get channel basic properties")
     @GetMapping("/{channelId}")
     public ChannelDto getStreamingStatus(@PathVariable String channelId) {
         return youtubeService.getChannel(channelId);
     }
 
-    @ApiOperation("get youtube")
-    @GetMapping("/{channelId}/linkedChannels")
-    public List<ChannelDto> getLinkedChannels(@PathVariable String channelId) {
+    @ApiOperation(value = "Get list of featured channels")
+    @GetMapping("/{channelId}/featured")
+    public List<ChannelDto> getFeaturedChannels(@PathVariable String channelId) {
         return youtubeService.getLinkedChannels(channelId);
     }
 
-
-    @ApiOperation("get youtube")
+    @ApiOperation(value = "Get all videos of a channel (few properties)")
     @GetMapping("/{channelId}/allUploads")
     public List<PlaylistItemDto> getLastUploads(@PathVariable String channelId) {
         return youtubeService.getAllUploadedElements(channelId);
     }
 
-    @ApiOperation("get youtube")
+    @ApiOperation(value = "Get all videos of a channel (all properties)")
     @GetMapping("/{channelId}/allVideos")
     public List<VideoDto> getLastVideos(@PathVariable String channelId) {
         return youtubeService.getVideos(channelId);

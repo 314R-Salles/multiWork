@@ -1,12 +1,12 @@
 package com.psalles.multiWork.Twitch.Service;
 
+import com.psalles.multiWork.Commons.Utils.CacheService;
 import com.psalles.multiWork.Twitch.Model.EnrichedStreamer;
 import com.psalles.multiWork.Twitch.Model.ExtensionResponse;
 import com.psalles.multiWork.Twitch.Model.UserResponse;
 import com.psalles.multiWork.Twitch.Model.VideoResponse;
 import com.psalles.multiWork.Twitch.TwitchAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,14 @@ import java.util.Map;
 @Service
 public class TwitchService {
 
-    private final CacheManager cacheManager;
     private final TwitchAdapter twitchAdapter;
+    private final CacheService cacheService;
 
     @Autowired
-    public TwitchService(TwitchAdapter twitchAdapter, CacheManager cacheManager) {
-        this.cacheManager = cacheManager;
+    public TwitchService(TwitchAdapter twitchAdapter,
+                         CacheService cacheService) {
         this.twitchAdapter = twitchAdapter;
+        this.cacheService = cacheService;
     }
 
     @Cacheable("user")
@@ -44,13 +45,13 @@ public class TwitchService {
     }
 
     public void logout(String token) {
-        this.twitchAdapter.logout(token);
         clearCaches(token);
+        this.twitchAdapter.logout(token);
     }
 
     private void clearCaches(String token) {
-        cacheManager.getCache("user").evict(token);
-        cacheManager.getCache("extensions").evict(token);
+        cacheService.evictUser(token);
+        cacheService.evictExtensions(token);
     }
 
 }

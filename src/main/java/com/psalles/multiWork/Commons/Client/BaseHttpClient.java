@@ -2,6 +2,9 @@ package com.psalles.multiWork.Commons.Client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.psalles.multiWork.Commons.exceptions.ForbiddenException;
+import com.psalles.multiWork.Commons.exceptions.TechnicalException;
+import com.psalles.multiWork.Commons.exceptions.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -45,6 +48,12 @@ public class BaseHttpClient {
             httpStatus = restEx.getStatusCode();
             responseBody = restEx.getResponseBodyAsString();
             LOGGER.debug("Following ERROR response has been received [{}] : {}", httpStatus, responseBody);
+            if (httpStatus.equals(HttpStatus.UNAUTHORIZED)) {
+                throw new UnauthorizedException(responseBody);
+            }
+            if (httpStatus.equals(HttpStatus.FORBIDDEN)) {
+                throw new ForbiddenException(responseBody);
+            }
             throw restEx;
         } catch (Exception e) {
             LOGGER.debug("Error while parsing response", e);
@@ -63,11 +72,14 @@ public class BaseHttpClient {
 
     private <R> R parseResponseFromJson(String responseBody, Class<R> responseClass) {
         try {
-            return mapper.readValue(responseBody, responseClass);
+            if (!responseBody.equals(EMPTY)) {
+                return mapper.readValue(responseBody, responseClass);
+            } else {
+                return null;
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new TechnicalException("Erreur lors du parsing d'un appel http");
         }
-        return null;
     }
 
 
