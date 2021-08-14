@@ -32,11 +32,11 @@ public class YoutubeController {
         return youtubeService.getChannel(channelId);
     }
 
-    @ApiOperation(value = "Get list of featured channels")
-    @GetMapping("/{channelId}/featured")
-    public List<ChannelDto> getFeaturedChannels(@PathVariable String channelId) {
-        return youtubeService.getLinkedChannels(channelId);
-    }
+//    @ApiOperation(value = "Get list of featured channels")
+//    @GetMapping("/{channelId}/featured")
+//    public List<ChannelDto> getFeaturedChannels(@PathVariable String channelId) {
+//        return youtubeService.getLinkedChannels(channelId);
+//    }
 
     @ApiOperation(value = "Get all videos of a channel (few properties)")
     @GetMapping("/{channelId}/allUploads")
