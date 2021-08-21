@@ -79,35 +79,6 @@ public class YoutubeCacheService {
         return ChannelMapper.toDtos(response);
     }
 
-    @Cacheable(value = "uploadPlaylist", key = "{ #channelId}")
-    public List<PlaylistItemDto> getAllUploadedElements(ChannelDto channel, String channelId) {
-        String uploadsId = channel.getUploads();
-
-        List<PlaylistItemResponse> lists = new ArrayList<>();
-
-        HashMap<String, List<String>> parameters = new HashMap<>();
-        parameters.put("part", usefulPlaylistParts);
-        parameters.put("maxResults", singletonList("50"));
-        parameters.put("playlistId", singletonList(uploadsId));
-        parameters.put("key", singletonList(key));
-
-        String videosUrl = youtubeV3 + "/playlistItems?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
-
-        PlaylistItemResponse response = httpClient.makeCall(HttpMethod.GET, videosUrl, PlaylistItemResponse.class, null, null);
-        lists.add(response);
-
-        // if more than 50 results, need to retrieve next pages.
-        while (response.getNextPageToken() != null) {
-            parameters.put("pageToken", singletonList(response.getNextPageToken()));
-            videosUrl = youtubeV3 + "/playlistItems?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
-
-            response = httpClient.makeCall(HttpMethod.GET, videosUrl, PlaylistItemResponse.class, null, null);
-            lists.add(response);
-        }
-        return PlaylistItemMapper.toDtos(lists);
-    }
-
-
     @Cacheable(value = "videos", key = "{ #channelId}")
     public List<VideoDto> getVideos(List<PlaylistItemDto> playlist, String channelId) {
 
@@ -132,6 +103,32 @@ public class YoutubeCacheService {
             lists.add(response);
         }
         return VideoMapper.toDtos(lists);
+    }
+
+    @Cacheable(value = "playlists", key = "{ #playlistId}")
+    public List<PlaylistItemDto> getPlaylist(String playlistId) {
+        List<PlaylistItemResponse> lists = new ArrayList<>();
+
+        HashMap<String, List<String>> parameters = new HashMap<>();
+        parameters.put("part", usefulPlaylistParts);
+        parameters.put("maxResults", singletonList("50"));
+        parameters.put("playlistId", singletonList(playlistId));
+        parameters.put("key", singletonList(key));
+
+        String videosUrl = youtubeV3 + "/playlistItems?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
+
+        PlaylistItemResponse response = httpClient.makeCall(HttpMethod.GET, videosUrl, PlaylistItemResponse.class, null, null);
+        lists.add(response);
+
+        // if more than 50 results, need to retrieve next pages.
+        while (response.getNextPageToken() != null) {
+            parameters.put("pageToken", singletonList(response.getNextPageToken()));
+            videosUrl = youtubeV3 + "/playlistItems?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
+
+            response = httpClient.makeCall(HttpMethod.GET, videosUrl, PlaylistItemResponse.class, null, null);
+            lists.add(response);
+        }
+        return PlaylistItemMapper.toDtos(lists);
     }
 
 }

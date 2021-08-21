@@ -3,6 +3,7 @@ package com.psalles.multiWork.Commons.Client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.psalles.multiWork.Commons.exceptions.ForbiddenException;
+import com.psalles.multiWork.Commons.exceptions.ResourceNotFoundException;
 import com.psalles.multiWork.Commons.exceptions.TechnicalException;
 import com.psalles.multiWork.Commons.exceptions.UnauthorizedException;
 import org.slf4j.Logger;
@@ -50,6 +51,9 @@ public class BaseHttpClient {
             LOGGER.debug("Following ERROR response has been received [{}] : {}", httpStatus, responseBody);
             if (httpStatus.equals(HttpStatus.UNAUTHORIZED)) {
                 throw new UnauthorizedException(responseBody);
+            }
+            if (httpStatus.equals(HttpStatus.NOT_FOUND)) {
+                throw new ResourceNotFoundException(responseBody);
             }
             if (httpStatus.equals(HttpStatus.FORBIDDEN)) {
                 throw new ForbiddenException(responseBody);

@@ -1,6 +1,7 @@
 package com.psalles.multiWork.youtube.controller;
 
 import com.psalles.multiWork.youtube.models.dtos.ChannelDto;
+import com.psalles.multiWork.youtube.models.dtos.LightPlaylistItemDto;
 import com.psalles.multiWork.youtube.models.dtos.PlaylistItemDto;
 import com.psalles.multiWork.youtube.models.dtos.VideoDto;
 import com.psalles.multiWork.youtube.service.YoutubeService;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Api(description = " ", tags = "Youtube endpoints")
 @RestController
-@RequestMapping("/youtube/channel")
+@RequestMapping("/youtube")
 public class YoutubeController {
 
     private final YoutubeService youtubeService;
@@ -27,7 +28,7 @@ public class YoutubeController {
     }
 
     @ApiOperation(value = "Get channel basic properties")
-    @GetMapping("/{channelId}")
+    @GetMapping("/channel/{channelId}")
     public ChannelDto getStreamingStatus(@PathVariable String channelId) {
         return youtubeService.getChannel(channelId);
     }
@@ -39,14 +40,20 @@ public class YoutubeController {
 //    }
 
     @ApiOperation(value = "Get all videos of a channel (few properties)")
-    @GetMapping("/{channelId}/allUploads")
+    @GetMapping("/channel/{channelId}/allUploads")
     public List<PlaylistItemDto> getLastUploads(@PathVariable String channelId) {
         return youtubeService.getAllUploadedElements(channelId);
     }
 
     @ApiOperation(value = "Get all videos of a channel (all properties)")
-    @GetMapping("/{channelId}/allVideos")
+    @GetMapping("/channel/{channelId}/allVideos")
     public List<VideoDto> getLastVideos(@PathVariable String channelId) {
         return youtubeService.getVideos(channelId);
+    }
+
+    @ApiOperation(value = "Get all videos of a playlist (few properties)")
+    @GetMapping("/playlist/{playlistId}")
+    public List<LightPlaylistItemDto> getPlaylist(@PathVariable String playlistId) {
+        return youtubeService.getLightPlaylist(playlistId);
     }
 }
