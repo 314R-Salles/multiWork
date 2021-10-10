@@ -2,10 +2,7 @@ package com.psalles.multiWork.youtube.service;
 
 import com.psalles.multiWork.Commons.exceptions.ResourceNotFoundException;
 import com.psalles.multiWork.Commons.exceptions.TechnicalException;
-import com.psalles.multiWork.youtube.models.dtos.ChannelDto;
-import com.psalles.multiWork.youtube.models.dtos.LightPlaylistItemDto;
-import com.psalles.multiWork.youtube.models.dtos.PlaylistItemDto;
-import com.psalles.multiWork.youtube.models.dtos.VideoDto;
+import com.psalles.multiWork.youtube.models.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +51,12 @@ public class YoutubeService {
         } catch (Exception e) {
             throw new TechnicalException("Something went wrong somewhere i guess");
         }
+    }
+
+    public List<PlaylistDto> getPlaylists(String token) {
+        return youtubeCacheService.getPlaylists(token).stream()
+                .filter(playlist -> !"private".equals(playlist.getStatus()))
+                .collect(Collectors.toList());
     }
 
     public List<VideoDto> getVideos(String channelId) {

@@ -65,6 +65,12 @@ public class BaseHttpClient {
         }
     }
 
+
+    public <R> R makeCall(String mock, Class<R> responseClass) {
+        return parseResponseFromJson(mock, responseClass);
+    }
+
+
     private String formatRequestToJson(Object request) {
         try {
             return mapper.writeValueAsString(request);

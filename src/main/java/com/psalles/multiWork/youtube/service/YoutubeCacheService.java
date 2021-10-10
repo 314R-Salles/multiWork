@@ -4,15 +4,19 @@ import com.psalles.multiWork.Commons.Client.BaseHttpClient;
 import com.psalles.multiWork.Commons.Utils.ParameterStringBuilder;
 import com.psalles.multiWork.youtube.mappers.ChannelMapper;
 import com.psalles.multiWork.youtube.mappers.PlaylistItemMapper;
+import com.psalles.multiWork.youtube.mappers.PlaylistMapper;
 import com.psalles.multiWork.youtube.mappers.VideoMapper;
 import com.psalles.multiWork.youtube.models.dtos.ChannelDto;
+import com.psalles.multiWork.youtube.models.dtos.PlaylistDto;
 import com.psalles.multiWork.youtube.models.dtos.PlaylistItemDto;
 import com.psalles.multiWork.youtube.models.dtos.VideoDto;
 import com.psalles.multiWork.youtube.models.youtubeApiModels.ChannelResponse;
 import com.psalles.multiWork.youtube.models.youtubeApiModels.PlaylistItemResponse;
+import com.psalles.multiWork.youtube.models.youtubeApiModels.PlaylistResponse;
 import com.psalles.multiWork.youtube.models.youtubeApiModels.VideoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +40,7 @@ public class YoutubeCacheService {
      */
 
     private final BaseHttpClient httpClient;
-    //    String key = "AIzaSyCM9nlF4Oa3ssHcZiuVZErxKJRzqASZ4Ac";
-    String key = "AIzaSyBki9jrSNFeLb1IWkx4sM9w2BrBjJQwhfE";
+    String key = "AIzaSyC4vwG2Y-Px5h9QYN6Di20SKu0xOBY5V3I";
     String youtubeV3 = "https://www.googleapis.com/youtube/v3";
     String usefulPartsString = "brandingSettings,contentDetails,snippet,statistics";
     List<String> usefulParts = Arrays.asList(usefulPartsString.split(","));
@@ -129,6 +132,41 @@ public class YoutubeCacheService {
             lists.add(response);
         }
         return PlaylistItemMapper.toDtos(lists);
+    }
+
+    public List<PlaylistDto> getPlaylists(String token) {
+        List<PlaylistResponse> lists = new ArrayList<>();
+
+        String usefulVideoPartsString = "contentDetails,id,snippet,status";
+        List<String> parts = Arrays.asList(usefulVideoPartsString.split(","));
+
+        HashMap<String, List<String>> parameters = new HashMap<>();
+        parameters.put("mine", singletonList("true"));
+        parameters.put("part", parts);
+        parameters.put("key", singletonList(key));
+
+        String videosUrl = youtubeV3 + "/playlists?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
+
+        PlaylistResponse response = httpClient.makeCall(HttpMethod.GET, videosUrl, PlaylistResponse.class, null, getAuthHeaders(token));
+        lists.add(response);
+
+        // if more than 50 results, need to retrieve next pages.
+        while (response.getNextPageToken() != null) {
+            parameters.put("pageToken", singletonList(response.getNextPageToken()));
+            videosUrl = youtubeV3 + "/playlists?" + ParameterStringBuilder.getParamsStringListCommaSeparated(parameters);
+
+            response = httpClient.makeCall(HttpMethod.GET, videosUrl, PlaylistResponse.class, null, getAuthHeaders(token));
+            lists.add(response);
+        }
+        return PlaylistMapper.toDtos(lists);
+    }
+
+
+    private HttpHeaders getAuthHeaders(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        headers.add("Accept", "application/json");
+        return headers;
     }
 
 }
