@@ -1,13 +1,11 @@
 package com.psalles.multiWork.twitter.service;
 
-import com.google.api.client.util.Charsets;
-import com.google.common.io.Resources;
 import com.psalles.multiWork.Commons.Client.BaseHttpClient;
 import com.psalles.multiWork.twitter.Tweets;
 import com.psalles.multiWork.twitter.TwitterUser;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -38,9 +36,18 @@ public class TwitterService {
     }
 
     @Scheduled(cron = "0 0 6-23 ? * * *")
+    public Tweets cacheUpdate() {
+        return updateTweets("RERB");
+    }
+
+    @CachePut("tweets")
+    public Tweets updateTweets(String username) {
+        return getTweets(username);
+    }
+
     @Cacheable("tweets")
     public Tweets getTweets(String username) {
-        Tweets tweets = httpClient.makeCall(HttpMethod.GET, TWEETS_BASE_URL + "from:" + username + "&max_results=100", Tweets.class, null, getAuthHeaders());
+        Tweets tweets = httpClient.makeCall(HttpMethod.GET, TWEETS_BASE_URL + "from:" + username + "&max_results=30", Tweets.class, null, getAuthHeaders());
 //        Tweets tweets = httpClient.makeCall(Resources.toString(Resources.getResource("twitter_mock.json"), Charsets.UTF_8), Tweets.class);
         tweets.getData().forEach(tweet -> {
             tweet.setUrl(TWEET_URL.replace("account", username).replace("id", tweet.getId()));

@@ -18,7 +18,8 @@ public class CacheConfig {
                 "channels",
                 "playlists",
                 "videos",
-                "linkedChannels"
+                "linkedChannels",
+                "tweets"
         );
     }
 }
