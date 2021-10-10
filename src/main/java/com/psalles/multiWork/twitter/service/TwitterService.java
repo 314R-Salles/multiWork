@@ -35,7 +35,7 @@ public class TwitterService {
         return httpClient.makeCall(HttpMethod.GET, USER_BASE_URL + username, TwitterUser.class, null, getAuthHeaders());
     }
 
-    @Scheduled(cron = "0 0 6-23 ? * * *")
+    @Scheduled(cron = "0 0 6-23 ? * *")
     public Tweets cacheUpdate() {
         return updateTweets("RERB");
     }
