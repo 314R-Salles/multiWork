@@ -32,7 +32,7 @@ public class TwitterController {
     @ApiOperation(value = "Get last tweets of user")
     @GetMapping("/tweets/{username}")
     public Tweets getTweets(@PathVariable String username) {
-        return twitterService.getTweets(username);
+        return twitterService.getCachedTweets(username);
     }
 
 }

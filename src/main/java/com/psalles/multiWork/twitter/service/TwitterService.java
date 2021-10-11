@@ -35,17 +35,21 @@ public class TwitterService {
         return httpClient.makeCall(HttpMethod.GET, USER_BASE_URL + username, TwitterUser.class, null, getAuthHeaders());
     }
 
-    @Scheduled(cron = "0 0 6-23 ? * *")
-    public Tweets cacheUpdate() {
-        return updateTweets("RERB");
+    @Scheduled(cron = "0 0/30 6-23 * * *")
+    public void cacheUpdate() {
+        updateTweets("RERB");
     }
 
-    @CachePut("tweets")
+    @CachePut(value = "tweets")
     public Tweets updateTweets(String username) {
         return getTweets(username);
     }
 
     @Cacheable("tweets")
+    public Tweets getCachedTweets(String username) {
+        return getTweets(username);
+    }
+
     public Tweets getTweets(String username) {
         Tweets tweets = httpClient.makeCall(HttpMethod.GET, TWEETS_BASE_URL + "from:" + username + "&max_results=30", Tweets.class, null, getAuthHeaders());
 //        Tweets tweets = httpClient.makeCall(Resources.toString(Resources.getResource("twitter_mock.json"), Charsets.UTF_8), Tweets.class);

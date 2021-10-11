@@ -25,3 +25,13 @@ server:
     key-store-password: psalles
     keyStoreType: PKCS12
     keyAlias: tomcat
+
+twitter:
+  api.v2:
+    tweet: https://api.twitter.com/2/tweets/
+    tweets: https://api.twitter.com/2/tweets/search/recent?query=
+    user: https://api.twitter.com/2/users/by/username/
+  bearer: ${twitterKey}
+
+meteo:
+  url: https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=minutely,daily&units=metric&appid=${meteoKey}
