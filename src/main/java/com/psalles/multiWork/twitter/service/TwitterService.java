@@ -3,6 +3,8 @@ package com.psalles.multiWork.twitter.service;
 import com.psalles.multiWork.Commons.Client.BaseHttpClient;
 import com.psalles.multiWork.twitter.Tweets;
 import com.psalles.multiWork.twitter.TwitterUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
@@ -26,6 +28,8 @@ public class TwitterService {
     @Value("${twitter.bearer}")
     private String token;
 
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     public TwitterService(BaseHttpClient httpClient) {
         this.httpClient = httpClient;
@@ -37,20 +41,24 @@ public class TwitterService {
 
     @Scheduled(cron = "0 0/30 6-23 * * *")
     public void cacheUpdate() {
+        LOGGER.info("Cache update");
         updateTweets("RERB");
     }
 
     @CachePut(value = "tweets")
     public Tweets updateTweets(String username) {
+        LOGGER.info("Update tweets");
         return getTweets(username);
     }
 
     @Cacheable("tweets")
     public Tweets getCachedTweets(String username) {
+        LOGGER.info("Get tweets");
         return getTweets(username);
     }
 
     public Tweets getTweets(String username) {
+        LOGGER.info("Actual Code");
         Tweets tweets = httpClient.makeCall(HttpMethod.GET, TWEETS_BASE_URL + "from:" + username + "&max_results=30", Tweets.class, null, getAuthHeaders());
 //        Tweets tweets = httpClient.makeCall(Resources.toString(Resources.getResource("twitter_mock.json"), Charsets.UTF_8), Tweets.class);
         tweets.getData().forEach(tweet -> {
