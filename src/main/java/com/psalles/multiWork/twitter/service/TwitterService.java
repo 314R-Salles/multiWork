@@ -39,21 +39,13 @@ public class TwitterService {
         return httpClient.makeCall(HttpMethod.GET, USER_BASE_URL + username, TwitterUser.class, null, getAuthHeaders());
     }
 
-    @Scheduled(cron = "0 0/30 6-23 * * *")
-    public void cacheUpdate() {
-        LOGGER.info("Cache update");
-        updateTweets("RERB");
-    }
-
     @CachePut(value = "tweets")
     public Tweets updateTweets(String username) {
-        LOGGER.info("Update tweets");
         return getTweets(username);
     }
 
     @Cacheable("tweets")
     public Tweets getCachedTweets(String username) {
-        LOGGER.info("Get tweets");
         return getTweets(username);
     }
 
