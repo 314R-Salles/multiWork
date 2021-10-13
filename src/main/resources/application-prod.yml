@@ -10,9 +10,6 @@ spring:
     username: ${usernameDB}
     password: ${passwordDB}
 
-actuator:
-  base_url: https://psalles.ovh:8081/actuator
-
 cron:
   duration: ${cronDuration}
 
